@@ -12,17 +12,19 @@ namespace ConsoleApp2
     public class AttractionParser : HtmlParser<AttractionDto>
     {
         private Browser _browser;
+        private PerformanceAnalyser _perf;
         public AttractionParser(string html, Browser browser) : base(html)
         {
             _browser = browser;
+            _perf = new PerformanceAnalyser();
         }
 
         public override AttractionDto Parse()
         {
             var html = LoadHtml();
-            var place = ParsePlace(html);
+            var place = _perf.Measure(()=>ParsePlace(html), "parse place");
             Console.WriteLine("Start Parsing: " + place);
-            var reviews = ParseReviews(html).GetAwaiter().GetResult();
+            var reviews = _perf.Measure(() => ParseReviews(html).GetAwaiter().GetResult(), "parse reviews");
 
             return new AttractionDto
             {
@@ -34,9 +36,9 @@ namespace ConsoleApp2
         private async Task<List<ReviewDto>> ParseReviews(HtmlDocument html)
         {
             var reviews = new List<ReviewDto>();
-            var pages = GetReviewsPages(html);
+            var pages = await GetReviewsPages(html);
 
-            Parallel.ForEach(await pages, page =>
+            Parallel.ForEach(pages, page =>
             {
                 reviews.AddRange(ParseReviewsFromPage(page));
             });
@@ -112,7 +114,10 @@ namespace ConsoleApp2
             var page = await _browser.NewPageAsync();
             await page.GoToAsync(nextPageLink);
             var nextPageHtml = await page.GetContentAsync();
-            await page.DisposeAsync();
+            try
+            {
+                await page.DisposeAsync();
+            }catch(Exception e){}
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(nextPageHtml);
 
