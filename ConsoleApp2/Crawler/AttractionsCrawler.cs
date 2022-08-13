@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ConsoleApp2.Helpers;
@@ -11,28 +10,30 @@ using PuppeteerSharp;
 
 namespace ConsoleApp2.Crawler
 {
-    public class AttractionsCrawler
+    public abstract class Crawler<T> where T : ILocationDto
     {
-        private Browser _browser;
+        protected Browser Browser;
 
-        public AttractionsCrawler(Browser browser)
+        protected Crawler(Browser browser)
         {
-            _browser = browser;
+            Browser = browser;
         }
 
-        public async Task<List<AttractionDto>> Start(Dictionary<string, string> cityAndUrl)
+        protected abstract string Name { get; }
+
+        public virtual async Task<List<T>> Start(Dictionary<string, string> cityAndUrl)
         {
             var a = new PerformanceAnalyser();
-            var attractions = new List<AttractionDto>();
+            var attractions = new List<T>();
             foreach (var (cityName, url) in cityAndUrl)
             {
-                var attractionsHtml = a.Measure(async()=> await GetAllAttractionsToParse(url), "find attractions page");
+                var attractionsHtml = a.Measure(async () => await GetAllItemsToParse(url), $"find {Name}s page");
                 foreach (var html in await attractionsHtml)
                 {
-                    var attractionParser = new AttractionParser(html, _browser);
-                    var attractioDto = a.Measure(attractionParser.Parse, " parse attraction ");
-                    attractioDto.City = cityName;
-                    Console.WriteLine("Parse attraction: " + attractioDto.Place);
+                    var attractionParser = GetParser(html);
+                    var attractioDto = a.Measure(attractionParser.Parse, $" parse {Name} ");
+                    attractioDto.SetLocation(cityName);
+                    Console.WriteLine($"Parse {Name}: {attractioDto}");
                     attractions.Add(attractioDto);
                 }
             }
@@ -40,9 +41,32 @@ namespace ConsoleApp2.Crawler
             return attractions;
         }
 
+        protected abstract Task<List<string>> GetAllItemsToParse(string url);
+
+        protected abstract HtmlParser<T> GetParser(string html);
+    }
+
+    public class AttractionsCrawler : Crawler<AttractionDto>
+    {
+        public AttractionsCrawler(Browser browser) : base(browser)
+        {
+        }
+
+        protected override string Name => "Attraction";
+
+        protected override Task<List<string>> GetAllItemsToParse(string url)
+        {
+            return GetAllAttractionsToParse(url);
+        }
+
+        protected override HtmlParser<AttractionDto> GetParser(string html)
+        {
+            return new AttractionParser(html, Browser);
+        }
+
         private async Task<List<string>> GetAllAttractionsToParse(string url)
         {
-            var explorer = new PageExplorer(_browser);
+            var explorer = new PageExplorer(Browser);
             var mainPage = await explorer.LoadPage(url);
             var pages = await GetPages(mainPage);
 
@@ -86,7 +110,7 @@ namespace ConsoleApp2.Crawler
             if (links.Length == 0)
                 return null;
             Console.WriteLine("Found: " + links[0]);
-            var explorer = new PageExplorer(_browser);
+            var explorer = new PageExplorer(Browser);
             return await explorer.LoadPage(links[0]);
         }
 
@@ -117,7 +141,7 @@ namespace ConsoleApp2.Crawler
             foreach (var link in programmerLinks)
             {
                 Console.WriteLine("Navigate to : " + link);
-                var explorer = new PageExplorer(_browser);
+                var explorer = new PageExplorer(Browser);
                 var attractionPage = await explorer.LoadPage(link);
                 attractionsHtml.Add(await attractionPage.GetContentAsync());
                 try

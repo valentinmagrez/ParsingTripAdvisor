@@ -125,10 +125,14 @@ namespace ConsoleApp2.Parsers.Attractions
         }
     }
     
-    public class AttractionDto
+    public class AttractionDto : ILocationDto
     {
         public string City { get; set; }
         public string Place { get; set; }
         public List<ReviewDto> Reviews { get; set; }
+        public void SetLocation(string cityName)
+        {
+            City = cityName;
+        }
     }
 }

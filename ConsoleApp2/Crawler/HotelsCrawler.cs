@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleApp2.Crawler
+﻿namespace ConsoleApp2.Crawler
 {
-    class HotelsCrawler
+    public class HotelsCrawler
     {
+        private const string ExampleLink =
+            "https://www.tripadvisor.com/Hotels-g295401-a_ufe.true-Sousse_Sousse_Governorate-Hotels.html";
+
+
     }
 }
