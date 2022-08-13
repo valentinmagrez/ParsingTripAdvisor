@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
 
-namespace ConsoleApp2
+namespace ConsoleApp2.Parsers
 {
     public abstract class HtmlParser<T>
     {

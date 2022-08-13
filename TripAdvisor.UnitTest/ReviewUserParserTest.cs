@@ -1,4 +1,5 @@
-using ConsoleApp2;
+using ConsoleApp2.Parsers;
+using ConsoleApp2.Parsers.Attractions;
 using NFluent;
 using NUnit.Framework;
 

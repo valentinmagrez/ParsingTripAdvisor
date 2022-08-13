@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
 using PuppeteerSharp;
-using Supremes.Nodes;
 
-namespace ConsoleApp2
+namespace ConsoleApp2.Parsers.Attractions
 {
     public class AttractionParser : HtmlParser<AttractionDto>
     {
-        private Browser _browser;
-        private PerformanceAnalyser _perf;
+        private readonly Browser _browser;
+        private readonly PerformanceAnalyser _perf;
+
         public AttractionParser(string html, Browser browser) : base(html)
         {
             _browser = browser;
@@ -71,19 +71,6 @@ namespace ConsoleApp2
             }
         }
 
-        private async Task<List<HtmlDocument>> GetReviewsPages(HtmlDocument html)
-        {
-            var pages = new List<HtmlDocument>();
-            var currentPage = html;
-            while (currentPage is not null)
-            {
-                pages.Add(currentPage);
-                currentPage = await GetNextReviewsPage(currentPage);
-            }
-
-            return pages;
-        }
-
         private string ParsePlace(HtmlDocument html)
         {
             try
@@ -101,7 +88,20 @@ namespace ConsoleApp2
                 return null;
             }
         }
-        
+
+        private async Task<List<HtmlDocument>> GetReviewsPages(HtmlDocument html)
+        {
+            var pages = new List<HtmlDocument>();
+            var currentPage = html;
+            while (currentPage is not null)
+            {
+                pages.Add(currentPage);
+                currentPage = await GetNextReviewsPage(currentPage);
+            }
+
+            return pages;
+        }
+
         private async Task<HtmlDocument> GetNextReviewsPage(HtmlDocument html)
         {
             var pagesLinkHtml = html.QuerySelectorAll("div.UCacc a");

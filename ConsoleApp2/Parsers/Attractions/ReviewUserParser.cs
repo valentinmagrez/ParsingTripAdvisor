@@ -3,7 +3,7 @@ using System.Linq;
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
 
-namespace ConsoleApp2
+namespace ConsoleApp2.Parsers.Attractions
 {
     public class ReviewUserParser : HtmlParser<UserDto>
     {

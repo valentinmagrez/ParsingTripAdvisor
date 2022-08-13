@@ -2,9 +2,8 @@
 using System.Linq;
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
-using OfficeOpenXml.Drawing.Style.Fill;
 
-namespace ConsoleApp2
+namespace ConsoleApp2.Parsers.Attractions
 {
     public class ReviewCardParser : HtmlParser<ReviewDto>
     {

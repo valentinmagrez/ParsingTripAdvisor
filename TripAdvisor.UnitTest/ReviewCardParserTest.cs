@@ -1,4 +1,4 @@
-using ConsoleApp2;
+using ConsoleApp2.Parsers.Attractions;
 using NFluent;
 using NUnit.Framework;
 
@@ -128,12 +128,12 @@ namespace TripAdvisor.UnitTest
         <div class=""vTVDc"">
             <div class=""_T FKffI bmUTE"">
                 <div class=""fIrGe _T"" style=""max-height: initial; line-break: normal; cursor: auto;""><q
-                        class=""QewHA H4 _a""><span>If your from England or Scotland if you do not like being insulted
-                            everywhere you go by all the people in mini buses or on the fun train ride from sousse beach
-                            etc don’t come to Tunisia. They all say in arabic so you do not understand Here’s another
-                            british with corona and</span><span class=""_""> laugh. I have experienced this so much that
-                            I’m really totally fed up with the way I’m being treated. I’ve not even coughed or sneezed
-                            or anything Yet they sneeze all the time, complaining of colds.</span>…</q></div>
+                        class=""QewHA H4 _a""><span>Did 4 dives with them (August 5 &amp; 6). Hosni (owner and diving
+instructor) and the rest of the staff are very nice, friendly and they make sure that
+everybody enjoys the experience (scuba diving or snorkeling). The second day I went back
+with my kids. For the first time they had  the chance to breath
+under water. They loved it. Will definitively dive with them again. Thank you
+Hosni.</span>…</q></div>
                 <div class=""lszDU"" style=""line-height: 20px;"">
                     <div class=""TnInx"" data-test-target=""expand-review""><span class=""Ignyf _S Z"">Read more</span><span
                             class=""ui_icon caret-down Lvqmo""></span></div>

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ConsoleApp2.Parsers;
+using ConsoleApp2.Parsers.Attractions;
 using OfficeOpenXml;
 
 namespace ConsoleApp2
